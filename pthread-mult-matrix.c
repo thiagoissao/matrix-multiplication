@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-int intType;
-int n_threads = 2;
+int N_THREADS = 4;
 
 struct multiply_array_params {
   pthread_t thread_id;
@@ -23,7 +22,6 @@ static void* multiply_array(void* arg) {
       for (int k = 0; k < tinfo->size; k++) {
         sum = sum + (tinfo->B[i][k] * tinfo->A[k][j]);
       }
-      printf("Sum: %i\n", sum);
       tinfo->C[i][j] = sum;
     }
   }
@@ -64,40 +62,34 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  threads = (pthread_t*)malloc(n_threads * sizeof(pthread_t));
-  tinfo = calloc(n_threads, sizeof(struct multiply_array_params));
+  threads = (pthread_t*)malloc(N_THREADS * sizeof(pthread_t));
+  tinfo = calloc(N_THREADS, sizeof(struct multiply_array_params));
 
-  for (int i = 0; i < n_threads; i++) {
+  int range = (int)SIZE / N_THREADS;
+
+  for (int i = 0; i < N_THREADS; i++) {
     tinfo[i].A = A;
     tinfo[i].B = B;
     tinfo[i].C = C;
     tinfo[i].thread_id = i;
     tinfo[i].size = SIZE;
 
-    //ajustar dps
-    if (i == 0) {
-      tinfo[i].end = 2;
-      tinfo[i].start = 0;
-    }
-    else {
-      tinfo[i].end = 4;
-      tinfo[i].start = 2;
-    }
-
+    tinfo[i].end = range * (i + 1);
+    tinfo[i].start = range * i;
 
     pthread_create(&threads[i], NULL, &multiply_array, &tinfo[i]);
   }
 
-  for (int i = 0; i < n_threads; i++) {
+  for (int i = 0; i < N_THREADS; i++) {
     pthread_join(threads[i], NULL);
   }
 
-  for (int i = 0; i < SIZE; i++) {
-    for (int j = 0; j < SIZE; j++) {
-      printf("%i ", C[i][j]);
-    }
-    printf("\n");
-  }
+  // for (int i = 0; i < SIZE; i++) {
+  //   for (int j = 0; j < SIZE; j++) {
+  //     printf("%i ", C[i][j]);
+  //   }
+  //   printf("\n");
+  // }
 
   return 0;
 }

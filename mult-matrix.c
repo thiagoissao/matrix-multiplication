@@ -46,12 +46,12 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  for (int i = 0; i < SIZE; i++) {
-    for (int j = 0; j < SIZE; j++) {
-      printf("%i ", C[i][j]);
-    }
-    printf("\n");
-  }
+  // for (int i = 0; i < SIZE; i++) {
+  //   for (int j = 0; j < SIZE; j++) {
+  //     printf("%i ", C[i][j]);
+  //   }
+  //   printf("\n");
+  // }
 
   return 0;
 }
