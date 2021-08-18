@@ -16,7 +16,7 @@ plt.plot(xPThread, yPThread, label="Using Threads",
 plt.xlabel('Matrix Dimensions')
 plt.ylabel('Time - secs')
 
-plt.title('Speedup for Matrix Multiplication')
+plt.title('Matrix Multiplication')
 
 plt.legend()
 
