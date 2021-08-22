@@ -42,6 +42,8 @@ void init_data(int size) {
 
 static void* multiply_array(void* arg) {
   struct multiply_array_params* tinfo = arg;
+  printf("START: %i\n", tinfo->start);
+  printf("END: %i\n", tinfo->end);
   for (int i = tinfo->start; i < tinfo->end; i++) {
     for (int j = 0; j < tinfo->size; j++) {
       int sum = 0;
@@ -83,14 +85,14 @@ int main(int argc, char* argv[]) {
   threads = (pthread_t*)malloc(n_threads * sizeof(pthread_t));
   tinfo = malloc(n_threads * sizeof(struct multiply_array_params));
 
-  int range = (int)size / n_threads;
+  int range = ((int)size / n_threads);
 
   for (int i = 0; i < n_threads; i++) {
     tinfo[i].thread_id = i + 1;
     tinfo[i].size = size;
 
-    tinfo[i].end = range * (i + 1);
     tinfo[i].start = range * i;
+    tinfo[i].end = range * (i + 1);
 
     pthread_create(&threads[i], NULL, &multiply_array, &tinfo[i]);
   }
