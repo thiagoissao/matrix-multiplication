@@ -1,6 +1,6 @@
 # thread-matrix-multiplication
 
-## Results (threads X array size)
+## Resultados (threads X array size)
 
 |      | Sequencial | 1       | 2       | 4       | 8       |
 | ---- | ---------- | ------- | ------- | ------- | ------- |

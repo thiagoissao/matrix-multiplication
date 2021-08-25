@@ -42,8 +42,6 @@ void init_data(int size) {
 
 static void* multiply_array(void* arg) {
   struct multiply_array_params* tinfo = arg;
-  printf("START: %i\n", tinfo->start);
-  printf("END: %i\n", tinfo->end);
   for (int i = tinfo->start; i < tinfo->end; i++) {
     for (int j = 0; j < tinfo->size; j++) {
       int sum = 0;
