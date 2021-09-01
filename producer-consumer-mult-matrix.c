@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include <semaphore.h>
 
-#define LIMITE 2
+#define LIMITE 5
 
 struct buffer_data {
   int** A;
@@ -59,10 +59,16 @@ void* create_matrix_producer() {
 
 void* multiply_matrix_consumer() {
   for (int i = 0; i < LIMITE; i++) {
+    struct buffer_data item;
+
     sem_wait(&full);
     pthread_mutex_lock(&mutex);
+    item = buffer[out];
+    printf("Consumidor remove item de %d\n", out);
+    out = (out + 1) % buffer_size;
+    pthread_mutex_unlock(&mutex);
+    sem_post(&empty);
 
-    struct buffer_data item = buffer[out];
     int C[matrix_size][matrix_size];
 
     for (int i = 0; i < matrix_size; i++) {
@@ -75,18 +81,6 @@ void* multiply_matrix_consumer() {
       }
     }
 
-    // printf("Matriz resultante\n");
-    // for (int i = 0; i < matrix_size; i++) {
-    //   for (int j = 0; j < matrix_size; j++) {
-    //     printf("%i ", C[i][j]);
-    //   }
-    //   printf("\n");
-    // }
-
-    printf("Consumidor remove item de %d\n", out);
-    out = (out + 1) % buffer_size;
-    pthread_mutex_unlock(&mutex);
-    sem_post(&empty);
   }
 
 }
